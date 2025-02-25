@@ -1,8 +1,13 @@
 ![Site preview](public/screenshot.png)
 
-My design portfolio to showcase a few projects. Built with [Astro](https://astro.build/), [TailwindCSS](https://tailwindcss.com/), [MDX](https://mdxjs.com/) and TypeScript. View the [live site](https://mkambur.com/). Check out the [Figma design](https://www.figma.com/design/VBuWfDQj9QlOKpjCETTf7O/Portfolio-Website---Mkambur.com).
+My design portfolio showcasing selected projects. Built with [Astro](https://astro.build/), [TailwindCSS](https://tailwindcss.com/), [MDX](https://mdxjs.com/) and TypeScript. Check out the [live site](https://mkambur.com/), [PageSpeed results](https://pagespeed.web.dev/analysis/https-mkambur-com/8xlr0y8jil?form_factor=mobile), or [Figma design](https://www.figma.com/design/VBuWfDQj9QlOKpjCETTf7O/Portfolio-Website---Mkambur.com).
 
 This portfolio was initially bootstrapped with [Dante Astro Theme](https://github.com/JustGoodUI/dante-astro-theme) and then completely customized with a new design while maintaining Astro's core functionality.
+
+<div align="center">
+
+![PageSpeed Result](public/mobile-performance.png)
+</div>
 
 ## Install & run
 
