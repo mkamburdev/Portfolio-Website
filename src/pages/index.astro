@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import ArrowRight from '../icons/ArrowRight.astro'
+import Hero from '../components/Hero.astro'
+import ProjectPreview from '../components/ProjectPreview.astro'
+import siteConfig from '../data/site-config'
+import { sortItemsByDateDesc } from '../utils/data-utils'
+
+const allProjects = (await getCollection('projects')).sort(sortItemsByDateDesc)
+const projects = allProjects.slice(0, siteConfig.projectsPerPage || 5)
+---
+
+<BaseLayout description={siteConfig.description} image={siteConfig.image}>
+    <Hero />
+    {
+        projects?.length > 0 && (
+            <div id="projects" class="mb-16 sm:mb-24 px-4 sm:px-4 md:px-6">
+                <div class="grid grid-cols-1">
+                    {projects.map((project, index) => (
+                        <ProjectPreview project={project} headingLevel="h3" index={index} />
+                    ))}
+                </div>
+                <div class="w-full border-b border-main py-4 md:py-5 flex items-center">
+                    <a href="/projects" class="inline-flex items-center font-bold text-lg md:text-2xl text-hover hover:text-main transition-colors">
+                        View All Projects
+                        <ArrowRight class="w-8 h-6 md:w-12 md:h-8 fill-current" />
+                    </a>
+                </div>
+            </div>
+        )
+    }
+</BaseLayout>

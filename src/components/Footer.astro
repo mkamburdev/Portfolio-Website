@@ -1,0 +1,36 @@
+---
+import Modal from './Modal.astro'
+---
+
+<footer class="w-full bg-main relative">
+    <div class="container mx-auto px-4 md:px-6 py-4 md:py-6">
+        <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6">
+            <div class="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-main text-sm md:text-base">
+                <span class="text-center md:text-left">© 2025 <a href="https://github.com/mkamburdev" target="_blank" rel="noopener noreferrer">Muhammed Kambur</a>. All rights reserved.</span>
+                <button data-modal="imprint-modal" class="hover:underline hover:underline-offset-4 cursor-pointer text-hover hover:text-main transition-colors">
+                    Imprint
+                </button>
+            </div>
+        </div>
+        <button
+            onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+            class="fixed md:absolute bottom-4 md:bottom-auto right-4 md:right-6 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full bg-bg-main/80 backdrop-blur-sm md:bg-transparent hover:-translate-y-1 transition-all duration-200 shadow-lg md:shadow-none"
+            aria-label="Back to top"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 text-main" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+            </svg>
+        </button>
+    </div>
+</footer>
+
+<Modal id="imprint-modal" title="Imprint">
+    <div class="text-zinc-800 dark:text-zinc-200 space-y-4">
+        <p class="font-light">Responsible for the content of this website:</p>
+        <p class="font-light">
+            Muhammed Kambur<br />
+            Germany
+        </p>
+        <p class="font-light">This imprint complies with German law according to § 5 TMG.</p>
+    </div>
+</Modal>

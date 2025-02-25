@@ -1,0 +1,29 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// Universal button/link component with consistent styling
+// Use href prop to render as <a> instead of <button>
+
+type AnchorProps = HTMLAttributes<'a'> & { type?: never };
+type ButtonProps = HTMLAttributes<'button'> & { href?: never };
+
+type Props = ButtonProps | AnchorProps;
+
+const { href, class: className, ...rest } = Astro.props;
+
+// Base styles + hover/active states
+const buttonClasses =
+    'inline-flex items-center justify-center px-4 md:px-6 py-1.5 md:py-2 font-serif leading-tight italic text-sm md:text-base text-main bg-main border border-main rounded-full transition-all duration-200 hover:bg-muted active:scale-95';
+---
+
+{
+    href ? (
+        <a href={href} class:list={[buttonClasses, className]} {...rest}>
+            <slot />
+        </a>
+    ) : (
+        <button class:list={[buttonClasses, className]} {...rest}>
+            <slot />
+        </button>
+    )
+}

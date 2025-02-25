@@ -1,0 +1,69 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import ArrowLeft from '../icons/ArrowLeft.astro'
+import Button from '../components/Button.astro'
+import siteConfig from '../data/site-config'
+
+export async function getStaticPaths() {
+    const pages = await getCollection('pages')
+    return pages.map((page) => {
+        return {
+            params: { id: page.id },
+            props: { page }
+        }
+    })
+}
+
+type Props = { page: CollectionEntry<'pages'> }
+
+const { page } = Astro.props
+const { title, description, seo } = page.data
+const socialLinks = siteConfig.socialLinks || []
+const { Content } = await render(page)
+---
+
+<BaseLayout title={seo?.title ?? title} description={seo?.description} image={seo?.image} showHeader={false}>
+    <article class="mb-8 sm:mb-16 md:mb-24">
+        <div class="w-full border-b border-main py-3 sm:py-5 flex flex-col sm:flex-row justify-between items-center mb-8 sm:mb-16 md:mb-24 gap-4 sm:gap-0">
+            <div class="flex gap-2 sm:gap-3 items-center text-lg sm:text-xl md:text-2xl text-main font-bold">
+                <a href="/" class="inline-flex items-center font-bold text-hover hover:text-main transition-colors">
+                    <ArrowLeft class="h-6 sm:h-7 md:h-8 fill-current" />
+                    Back to Index
+                </a>
+            </div>
+            <span class="text-lg hidden sm:block sm:text-xl md:text-2xl text-main font-black">Muhammed Kambur</span>
+        </div>
+        <div class="flex flex-col items-start">
+            <div class="w-full border-b border-main py-3 sm:py-5 flex items-center">
+                <h1 class="font-bold text-lg sm:text-xl md:text-2xl text-main">{title}</h1>
+            </div>
+            {description && (
+                <div class="w-full py-3 sm:py-5 flex items-center">
+                    <p class="text-lg sm:text-xl md:text-4xl lg:text-7xl font-black opacity-90 max-w-full leading-normal lg:leading-[1.1]">{description}</p>
+                </div>
+            )}
+        </div>
+    </article>
+    <div class="font-semibold max-w-none prose-dante prose-invert lg:prose-lg mb-8 sm:mb-16 [&_a]:text-hover [&_a:hover]:text-black [&_a]:transition-colors">
+        <Content />
+    </div>
+    
+    {socialLinks.length > 0 && (
+        <div class="w-full border-b border-main py-3 sm:py-5 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+            <div class="text-lg sm:text-xl md:text-2xl text-main font-bold">Contact</div>
+            <div class="flex gap-4 sm:gap-6">
+                {socialLinks.map((link) => (
+                    <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-lg sm:text-xl md:text-2xl text-hover font-black hover:text-main transition-colors"
+                    >
+                        {link.text}
+                    </a>
+                ))}
+            </div>
+        </div>
+    )}
+</BaseLayout>

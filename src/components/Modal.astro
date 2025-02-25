@@ -1,0 +1,68 @@
+---
+// Accessible modal dialog using native <dialog>
+// Opens via data-modal="modal-id" trigger elements
+// Closes on backdrop click, close button, or Esc
+
+export interface Props {
+  // Links modal to trigger elements
+  id: string;
+  
+  // Optional header text
+  title?: string;
+}
+
+const { id, title } = Astro.props;
+---
+
+<dialog 
+  id={id} 
+  class="p-0 border-none rounded bg-bg-main dark:bg-zinc-800 text-main shadow-xl m-4 md:m-auto max-w-[calc(100%-2rem)] md:max-w-lg backdrop:bg-black/50 backdrop:backdrop-blur-sm"
+>
+  <div class="p-4 md:p-8 relative min-w-[280px] md:min-w-[300px]">
+    {title && <h2 class="text-xl md:text-2xl mb-4 font-light">{title}</h2>}
+    <slot />
+    <button 
+      class="absolute top-3 md:top-4 right-3 md:right-4 text-2xl md:text-3xl bg-transparent border-none cursor-pointer text-main opacity-60 hover:opacity-100 transition-opacity duration-200" 
+      aria-label="Close modal"
+    >
+      ×
+    </button>
+  </div>
+</dialog>
+
+<script>
+  // Initialize modal triggers and close handlers
+  function setupModals() {
+    // Find all modals on the page
+    const modals = document.querySelectorAll<HTMLDialogElement>('dialog');
+
+    modals.forEach(modal => {
+      const modalId = modal.id;
+      const triggers = document.querySelectorAll(`[data-modal="${modalId}"]`);
+      const closeBtn = modal.querySelector('button[aria-label="Close modal"]');
+
+      // Set up open triggers that reference this modal
+      triggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          modal.showModal();
+        });
+      });
+
+      // Enable the close button in the top-right
+      closeBtn?.addEventListener('click', () => {
+        modal.close();
+      });
+
+      // Allow clicking the backdrop to close the modal
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.close();
+        }
+      });
+    });
+  }
+
+  setupModals();
+
+  document.addEventListener('astro:page-load', setupModals);
+</script>

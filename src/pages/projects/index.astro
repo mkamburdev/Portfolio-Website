@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ArrowLeft from '../../icons/ArrowLeft.astro'
+import ProjectPreview from '../../components/ProjectPreview.astro'
+import { sortItemsByDateDesc } from '../../utils/data-utils'
+
+const projects = (await getCollection('projects')).sort(sortItemsByDateDesc)
+---
+
+<BaseLayout title="Projects">
+    <div class="mb-8 sm:mb-16 md:mb-24">
+        <div class="w-full border-b border-main py-3 sm:py-5 flex flex-col sm:flex-row justify-between items-center mb-8 sm:mb-16 md:mb-24 gap-4 sm:gap-0">
+            <div class="flex gap-2 sm:gap-3 items-center text-lg sm:text-xl md:text-2xl text-main font-bold">
+                <a href="/" class="inline-flex items-center font-bold text-hover hover:text-main transition-colors">
+                    <ArrowLeft class="h-6 sm:h-7 md:h-8 fill-current" />
+                    Back to Index
+                </a>
+            </div>
+            <span class="text-lg hidden sm:block sm:text-xl md:text-2xl text-main font-black">Muhammed Kambur</span>
+        </div>
+        <div class="flex flex-col items-start">
+            <div class="w-full border-b border-main py-3 sm:py-5 flex items-center">
+                <h1 class="font-bold text-xl sm:text-2xl text-main">Selected Projects</h1>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 mt-8 sm:mt-12 select-none">
+            {projects.map((project, index) => <ProjectPreview project={project} headingLevel="h2" index={index} />)}
+        </div>
+    </div>
+</BaseLayout>

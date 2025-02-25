@@ -1,0 +1,110 @@
+---
+import { type CollectionEntry } from 'astro:content'
+
+// Project card with hover image preview and scroll animations
+// Shows project title, year, and floating thumbnail on hover
+
+type Props = {
+    project: CollectionEntry<'projects'>
+    index?: number
+    headingLevel?: 'h2' | 'h3'
+    class?: string
+}
+
+const { project, index, headingLevel = 'h2', class: className } = Astro.props
+const { title, seo, categories = [], clickable = true, publishDate } = project.data as { 
+    title: string; 
+    seo?: { image?: { src: string } }; 
+    categories?: string[];
+    clickable?: boolean;
+    publishDate: Date;
+}
+const image = seo?.image
+const TitleTag = headingLevel
+const isLarge = index !== undefined ? [0, 3].includes(index % 4) : false
+---
+
+<div class={`relative opacity-0 translate-y-10 transition-all duration-700 ease-out ${className || ''} ${!clickable ? 'cursor-not-allowed opacity-60' : ''}`} data-scroll-animate>
+    {clickable ? (
+        <a href={`/projects/${project.id}/`} class="block">
+            <TitleTag class="flex justify-between items-center project-title py-6 sm:py-8 lg:py-10 text-3xl sm:text-5xl lg:text-8xl font-black hover:text-blue-700 dark:hover:text-blue-700 text-left z-[1] relative">
+                {title}
+                <span class="text-sm sm:text-base text-gray-500 dark:text-gray-400 ml-4">
+                    {publishDate.getFullYear()}
+                </span>
+            </TitleTag>
+            <div
+                class="project-image fixed w-[520px] h-[340px] pointer-events-none opacity-0 z-[-1] -translate-x-1/2 -translate-y-1/2 scale-95 blur-sm bg-cover bg-center shadow-md"
+                style={`background-image: url(${image?.src || '/default-project-image.jpg'})`}
+            >
+            </div>
+        </a>
+    ) : (
+        <div class="block">
+            <TitleTag class="flex justify-between items-center project-title py-6 sm:py-8 lg:py-10 text-3xl sm:text-5xl lg:text-8xl font-black text-left z-[1] relative">
+                {title}
+                <div class="inline-flex gap-2 text-sm sm:text-base text-gray-500 dark:text-gray-400 ml-4">
+                    <span>Not Active</span>
+                </div>
+            </TitleTag>
+            <div
+                class="project-image fixed w-[520px] h-[340px] pointer-events-none opacity-0 z-[-1] -translate-x-1/2 -translate-y-1/2 scale-95 blur-sm bg-cover bg-center shadow-md"
+                style={`background-image: url(${image?.src || '/default-project-image.jpg'})`}
+            >
+            </div>
+        </div>
+    )}
+</div>
+
+<style>
+    @media (min-width: 640px) {
+        .project-title:hover + .project-image {
+            opacity: 1;
+            scale: 1;
+            filter: blur(0);
+        }
+    }
+</style>
+
+<script>
+    // Set up intersection observer for fade-in and hover effects
+    // Tracks scroll visibility and handles mouse position for preview
+    function initializeHoverEffects() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('[data-scroll-animate]').forEach(element => {
+            observer.observe(element);
+        });
+
+        document.querySelectorAll('.project-title').forEach((title: Element) => {
+            const image = title.nextElementSibling
+
+            const mouseMoveHandler = (e: Event) => {
+                const mouseEvent = e as MouseEvent
+                if (image instanceof HTMLElement) {
+                    const mouseX = mouseEvent.clientX
+                    const mouseY = mouseEvent.clientY
+
+                    image.style.left = `${mouseX}px`
+                    image.style.top = `${mouseY}px`
+                }
+            }
+
+            if (window.innerWidth >= 640) {
+                title.removeEventListener('mousemove', mouseMoveHandler)
+                title.addEventListener('mousemove', mouseMoveHandler)
+            }
+        })
+    }
+
+    document.addEventListener('astro:page-load', initializeHoverEffects)
+</script>

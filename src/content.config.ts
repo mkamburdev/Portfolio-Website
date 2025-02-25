@@ -1,0 +1,38 @@
+import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
+
+const seoSchema = z.object({
+    title: z.string().min(5).max(120).optional(),
+    description: z.string().min(15).max(160).optional(),
+    image: z
+        .object({
+            src: z.string(),
+            alt: z.string().optional()
+        })
+        .optional(),
+    pageType: z.enum(['website', 'article']).default('website'),
+    noindex: z.boolean().optional()
+});
+
+const pages = defineCollection({
+    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/pages' }),
+    schema: z.object({
+        title: z.string(),
+        description: z.string().optional(),
+        seo: seoSchema.optional()
+    })
+});
+
+const projects = defineCollection({
+    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
+    schema: z.object({
+        title: z.string(),
+        description: z.string().optional(),
+        publishDate: z.coerce.date(),
+        isFeatured: z.boolean().default(false),
+        clickable: z.boolean().default(true),
+        seo: seoSchema.optional()
+    })
+});
+
+export const collections = { pages, projects };

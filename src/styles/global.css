@@ -1,0 +1,54 @@
+@import '@fontsource/poppins';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --color-text-main: 000 000 000; /* #000000 */
+        --color-text-hover: 157 158 160; /* #9d9ea0 */
+        --color-bg-main: 255 255 255; /* #FFFFFF */
+        --color-bg-muted: 255 255 255; /* #FFFFFF */
+        --color-border-main: 23 23 23; /* #171717 */
+    }
+    html.dark {
+        --color-text-main: 255 255 255; /* #FFFFFF */
+        --color-text-hover: 157 158 160; /* #9d9ea0 */
+        --color-bg-main: 000 000 000; /* #000000 */
+        --color-bg-muted: 000 000 000; /* #000000 */
+        --color-border-main: 213 241 236; /* #9D9EA0 */
+    }
+
+    /* Cyan */
+    /*
+    :root {
+        --color-text-main: 22 42 43;
+        --color-bg-main: 214 224 226;
+        --color-bg-muted: 204 216 219;
+        --color-border-main: 22 42 43;
+    }
+    html.dark {
+        --color-text-main: 214 224 226;
+        --color-bg-main: 22 42 43;
+        --color-bg-muted: 28 53 55;
+        --color-border-main: 214 224 226;
+    }
+    */
+
+    /* Green */
+    /*
+    :root {
+        --color-text-main: 58 66 56;
+        --color-bg-main: 243 239 230;
+        --color-bg-muted: 238 233 220;
+        --color-border-main: 58 66 56;
+    }
+    html.dark {
+        --color-text-main: 243 239 230;
+        --color-bg-main: 94 108 91;
+        --color-bg-muted: 89 103 86;
+        --color-border-main: 243 239 230;
+    }
+    */
+}

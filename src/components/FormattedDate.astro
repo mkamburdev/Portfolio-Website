@@ -1,0 +1,18 @@
+---
+// Date formatter component using US locale
+// Renders semantic <time> element with ISO string
+
+type Props = { date: Date };
+
+const { date } = Astro.props;
+---
+
+<time datetime={date.toISOString()}>
+    {
+        date.toLocaleDateString('en-us', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        })
+    }
+</time>
